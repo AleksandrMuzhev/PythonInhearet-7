@@ -1,28 +1,33 @@
-class Media:
+class Track:
 
-    def __init__(self, name, artist):
+    def __init__(self, name, duration):
         self.name = name
-        self.artist = artist
-
-    def show(self):
-        print(f'Name: {self.name}, Artist: {self.artist}')
-
-
-class Track(Media):
-
-    def __init__(self, name, artist, duration):
-        super().__init__(name, artist)
         self.duration = duration
 
-    def show(self):
-        super().show()
-        print(f'Duraction: {self.duration}')
+    def __str__(self):
+        return f'{self.name}-{self.duration}min'
+
+    def __eq__(self, other):
+        return self.duration == other.duration
+
+    def __gt__(self, other):
+        return self.duration > other.duration
+
+    def __lt__(self, other):
+        return self.duration < other.duration
+
+    def __ge__(self, other):
+        return self.duration >= other.duration
+
+    def __le__(self, other):
+        return self.duration <= other.duration
 
 
-class Album(Media):
+class Album:
 
-    def __init__(self, name, artist, tracks):
-        super().__init__(name, artist)
+    def __init__(self, name, group, tracks):
+        self.name = name
+        self.group = group
         self.tracks = tracks
 
     def get_tracks(self):
@@ -38,13 +43,24 @@ class Album(Media):
             album_duration += track.duration
         print('Длительность альбома', album_duration)
 
+    def __str__(self):
+        s = f'Name group: {self.group}\n' \
+            f'Name album: {self.name}\n' \
+            f'Tracks:\n'
+        for track in self.tracks:
+            s += f'\t {track}\n'
+        return s
 
-violator_tracks = [Track('Personal Jesus', 'Depeche Mode', 5), Track('Enjoy the Silence', 'Depeche Mode', 4),
-                   Track('Clean', 'Depeche Mode', 3)]
+
+violator_tracks = [Track('Personal Jesus', 5), Track('Enjoy the Silence', 4), Track('Clean', 3)]
 violator = Album('Violator', 'Depeche Mode', violator_tracks)
 violator.get_duration()
+print(violator)
 
-smiths_tracks = [Track('Reel Around the Fountain', 'Depeche Mode', 7), Track('Miserable Lie', 'Depeche Mode', 4),
-                 Track('Pretty Girls Make Graves', 'Depeche Mode', 3)]
+smiths_tracks = [Track('Reel Around the Fountain', 7), Track('Miserable Lie', 4), Track('Pretty Girls Make Graves', 3)]
 smiths_album = Album('The Smiths', 'The Smiths', smiths_tracks)
 smiths_album.get_duration()
+print(smiths_album)
+
+print(violator_tracks[0] > smiths_tracks[0])
+print(violator_tracks[2] == smiths_tracks[2])
